@@ -115,6 +115,29 @@ const atag = document.querySelector("a")!; //! it means that you saying it never
 
 console.log(atag);
 
-const input1 = document.querySelector("#form1") as HTMLInputElement;
+const input1 = document.querySelector("#form1") as HTMLInputElement; // type Assertions
 
 console.log(input1.value);
+
+// Generic
+
+const addPlace = (obj: Object) => {
+  let place = "Ahmadabad";
+  return { ...obj, place };
+};
+
+let person1 = addPlace({ name: "raj", age: 12 });
+
+// console.log(person1.name);    This will give an error because we not specified return type and it does not know what properties object has.
+
+// TO upgrade that we use generic
+
+const pincode = <T extends Object>(obj: T) => {
+  let pincode = "312020";
+  return { ...obj, pincode };
+};
+
+let newAddress = pincode({ stree: 14, landMark: "ramnagar" });
+
+console.log(newAddress);
+console.log("Land Mark:", newAddress.landMark);
