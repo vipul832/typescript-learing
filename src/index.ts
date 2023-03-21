@@ -111,13 +111,13 @@ console.log(car("BMW", 2023));
 
 //Querying the Document
 
-const atag = document.querySelector("a")!; //! it means that you saying it never will be null or undefined
+const atag = document.querySelector("a")!; //! it means that you saying it never will be null or undefined "!" this knows as definite assignment operator
 
 console.log(atag);
 
-const input1 = document.querySelector("#form1") as HTMLInputElement; // type Assertions
+const input1 = document.querySelector("#form1"); // type Assertions
 
-console.log(input1.value);
+console.log(input1);
 
 // Generic
 
@@ -132,7 +132,8 @@ let person1 = addPlace({ name: "raj", age: 12 });
 
 // TO upgrade that we use generic
 
-const pincode = <T extends Object>(obj: T) => {
+// METHOD 1
+const pincode = <T extends Object>(obj: T): T => {
   let pincode = "312020";
   return { ...obj, pincode };
 };
@@ -141,3 +142,51 @@ let newAddress = pincode({ stree: 14, landMark: "ramnagar" });
 
 console.log(newAddress);
 console.log("Land Mark:", newAddress.landMark);
+
+// METHOD 2 USING INTERFACE
+
+interface DocStore<T> {
+  DocId: number;
+  DocName: string;
+  DocDate: T;
+}
+
+const doc: DocStore<object> = {
+  // Hear i can specified what should be the type of property
+  DocId: 1,
+  DocName: "Bill Record",
+  DocDate: { day: 12, month: 2, year: 2013 },
+};
+
+const isObj = <T>(a: T): boolean => {
+  return typeof a == "object" && !Array.isArray(a) && a !== null;
+};
+
+console.log(isObj(true));
+console.log(isObj([1, 2, 3]));
+console.log(isObj({ a: 12 }));
+
+//never
+let outNever: number & string; // number and string cannot be come together
+
+// utility Type
+
+/*
+  1) partial:- partial allows us to make all properties on an object optional.
+  2)pick:- pick allows us to select one or more properties from an object
+*/
+
+//partial
+
+interface Starship {
+  name: string;
+  enableHyperJump: boolean;
+}
+
+// let FalconShip: (id: number, shipInfo: Starship) => void;
+
+let FalconShip = (id: number, shipInfo: Partial<Starship>) => {
+  return { id, ...shipInfo };
+};
+
+FalconShip(1, { name: "falconShip" });
